@@ -1,0 +1,21 @@
+import os
+from game_matrix import GameMatrix
+
+game_folder = os.path.dirname(os.path.abspath(__file__))
+game_matrix_folder = os.path.join(game_folder, "game_matrix")
+os.makedirs(game_matrix_folder, exist_ok=True)
+
+num_villagers = 5
+num_builders = 3
+num_soldiers = 2
+
+game = GameMatrix()
+game.create_game_matrix(num_villagers, num_builders, num_soldiers)
+game.print_game_matrix()
+
+filename = os.path.join(game_matrix_folder, "game_matrix.txt")
+game.save_game_matrix(filename)
+
+loaded_game = GameMatrix()
+loaded_game.load_game_matrix(filename)
+loaded_game.print_game_matrix()
