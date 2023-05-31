@@ -1,4 +1,4 @@
-## BattleMasters Game
+# BattleMasters Game
 
 ![logo](https://github.com/CodeWizardette/BattleMasters/assets/131625021/53e8c8cf-03b5-4b04-bd0d-75320f107a99)
 
@@ -12,19 +12,19 @@ There are four different worker groups in the game. A group of workers has diffe
     Trader: The trader group is used to trade with other players and exchange resources.
     Soldier: Soldier group is used to defend the kingdom and empire with other players.
 
-##2. Game Map
+2. Game Map
 
 The game is played on a large world map. The map contains different regions and resources. Players explore the map to create their own kingdoms and conquer these territories.
 
-##3. Resources
+## 3. Resources
 
 There are various natural resources on the map. Resources such as mines, woodcutting zones, farmlands are used to develop players' kingdoms and run their armies.
 
-###4. War
+### 4. War
 
 Players use their soldiers to fight other players. Battles require elements of strategy and tactics. Players must choose the right military units, make tactical moves and create strategic plans to defeat the enemies.
 #if you wanna FORK Readme.txt yes you can 
 
-##5. Trade
+## 5. Trade
 
 Provides trade, game resources, shopping malls. The trade is all money talk bs walk 
