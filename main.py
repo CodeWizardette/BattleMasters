@@ -8,22 +8,50 @@ import sys
 from Villager import Villager
 from builder import Builder 
 from soldier import Soldier 
-from game_commands import move_villager,attack,build,upgrade,sell
+from game_commands import attack,build
 
 
 # Klasörleri oku
 game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, "img")
+game_image = os.path.join(game_folder, "img")
 sound_folder = os.path.join(game_folder, "sound")
 font_folder = os.path.join(game_folder, "font")
 map_folder = os.path.join(game_folder, "map")
 game_matrix_folder = os.path.join(game_folder, "game_matrix.txt")
 
 # Ekranı otomatik algıla
+pygame.init()
+
+
 info = pygame.display.Info()
 WIDTH = info.current_w
 HEIGHT = info.current_h
 
+# Entry Screen
+class EntryScreen:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.screen_surface = pygame.Surface((self.width, self.height))
+        self.frame = pygame.Rect(200, 200, self.width - 400, self.height - 400) # Giriş ekranı çerçevesi
+        self.tutorial_message = ["Welcome to BattleMasters!", "This is a real-time strategy game", "You can control villagers, builders, and soldiers", "Select one of these characters and set their destination", "Click on the screens to view them", "Press any key to continue"]
+
+    def draw(self, surface):
+        surface.fill((0, 0, 0))
+        pygame.draw.rect(surface, (255, 255, 255), self.frame, 2)
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        y_offset = 50
+        for message in self.tutorial_message:
+            text = font.render(message, True, WHITE)
+            text_rect = text.get_rect(center=(self.width/2, self.height/2 + y_offset))
+            surface.blit(text, text_rect)
+            y_offset += 50
+
+    def handle_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            return False
+        return True
+       
 # Renkler
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -41,7 +69,7 @@ PURPLE = (128, 0, 128)
 def main():
     pygame.init()
     window = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("My Strategy Game")
+    pygame.display.set_caption("BatteMasters")
 
     all_sprites = pygame.sprite.Group()
 
@@ -104,17 +132,19 @@ def handle_input(all_sprites):
 
             # Köylülerin tıklanıp tıklanmadığını kontrol et
             for villager in all_sprites:
+                villager_move = villager
                 if isinstance(villager, Villager) and villager.rect.collidepoint(mouse_pos):
                     # Köylüye tıklandıysa
                     if villager.selected:
                         # Eğer köylü zaten seçiliyse, yeni hedef konumu belirleyerek ona gönder
-                        move_villager(villager, mouse_pos)
-                    else:
-                        # Eğer köylü seçili değilse, seçili hale getir
-                        villager.selected = True
-                        villager.select_color = GREEN
-
-                else:
+                        villager_move(villager, mouse_pos)
+                        # Eğer köylönçözési sözdekilere tıklandıysa, yeni hedef konumu belirleyerek ona gönder
+                        if villager.rect.collidepoint(mouse_pos):
+                            villager_move(villager, mouse_pos)
+                        else:
+                            # Eğer köylü seçili değilse, seçili hale getir
+                            villager.selected = True
+                            villager.select_color = GREEN
                     # Köylüye tıklanmadıysa, tüm köylülerin seçimini kaldır
                     if isinstance(villager, Villager):
                         villager.selected = False
@@ -175,7 +205,7 @@ class MainMap:
         self.width = width
         self.height = height
         self.map_surface = pygame.Surface((self.width, self.height))
-        self.background_image = pygame.image.load("background.png") # Arka plan resmi
+        self.background_image = pygame.image.load("game_image/background.png") # Arka plan resmi
         self.frame = pygame.Rect(100, 100, self.width - 200, self.height - 200) # Ana çerçeve
 
     def draw(self, surface):
@@ -260,6 +290,13 @@ def main():
                     pygame.display.flip()
                     pygame.time.wait(1000)
                     entry_screen_visible = False
+                # Savaş ekranında tıklama kontrolö
+                elif battle_screen.frame.collidepoint(event.pos):
+                    battle_screen.draw(window)
+                    pygame.display.flip()
+                    pygame.time.wait(1000)
+                    battle_screen_visible = True
+                    
                 # Köy ekranında tıklama kontrolü
                 elif village_screen.frame.collidepoint(event.pos):
                     village_screen.draw(window)
