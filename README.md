@@ -1,5 +1,6 @@
-# BattleMasters
-BattleMasters Game
+## BattleMasters Game
+
+![logo](https://github.com/CodeWizardette/BattleMasters/assets/131625021/53e8c8cf-03b5-4b04-bd0d-75320f107a99)
 
 BattleMasters is a strategy based online war game. Players fight with other players by establishing their own kingdoms and struggle to dominate the world. The game includes the following main components:
 1. Workers' Groups
